@@ -112,7 +112,7 @@
         
         <div class="flex items-center space-x-6">
             <a href="SpydyReminder.dmg" download="SpydyReminder.dmg"
-               onclick="incrementCounter(); va('event', 'Download Clicked');"
+               onclick="va('event', 'Download Clicked');"
                class="flex items-center bg-gray-100 hover:bg-gray-200 transition text-dark text-sm font-bold px-4 py-2 rounded-full">
                 <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.37 7.648c-.114.088-2.11 1.213-2.11 3.715 0 2.894 2.54 3.918 2.616 3.944-.011.062-.403 1.402-1.34 2.767-.834 1.201-1.706 2.4-3.032 2.4s-1.667-.77-3.198-.77c-1.492 0-2.022.796-3.235.796-1.214 0-2.06-1.112-3.033-2.477C4.911 16.42 4 13.93 4 11.566c0-3.791 2.465-5.802 4.891-5.802 1.29 0 2.364.847 3.173.847.77 0 1.972-.897 3.438-.897.556 0 2.553.05 3.867 1.934Zm-4.564-3.54c.607-.719 1.036-1.718 1.036-2.716 0-.138-.012-.279-.037-.392-.987.037-2.161.657-2.87 1.478-.555.632-1.074 1.63-1.074 2.643 0 .152.026.304.037.353.063.011.164.025.266.025.885 0 1.998-.593 2.642-1.39Z"></path></svg>
                 Download for Mac
@@ -131,7 +131,7 @@
         <div class="flex items-center space-x-4">
             <!-- Main CTA -->
             <a href="SpydyReminder.dmg" download="SpydyReminder.dmg"
-               onclick="incrementCounter(); va('event', 'Download Clicked');"
+               onclick="va('event', 'Download Clicked');"
                class="flex items-center bg-[#2c2b29] hover:bg-[#1a1917] shadow-xl text-white text-lg font-bold px-6 py-3.5 rounded-[1rem] transition transform hover:scale-[1.02]">
                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.37 7.648c-.114.088-2.11 1.213-2.11 3.715 0 2.894 2.54 3.918 2.616 3.944-.011.062-.403 1.402-1.34 2.767-.834 1.201-1.706 2.4-3.032 2.4s-1.667-.77-3.198-.77c-1.492 0-2.022.796-3.235.796-1.214 0-2.06-1.112-3.033-2.477C4.911 16.42 4 13.93 4 11.566c0-3.791 2.465-5.802 4.891-5.802 1.29 0 2.364.847 3.173.847.77 0 1.972-.897 3.438-.897.556 0 2.553.05 3.867 1.934Zm-4.564-3.54c.607-.719 1.036-1.718 1.036-2.716 0-.138-.012-.279-.037-.392-.987.037-2.161.657-2.87 1.478-.555.632-1.074 1.63-1.074 2.643 0 .152.026.304.037.353.063.011.164.025.266.025.885 0 1.998-.593 2.642-1.39Z"></path></svg>
                 Download for Mac
@@ -142,8 +142,6 @@
                 <img src="images/logo.png" class="w-5 h-5 rounded mr-2 opacity-80" />
                 <span class="text-sm font-bold text-gray-800 mr-3">100% Free</span>
                 <span class="bg-gray-700 text-white text-xs font-bold px-2 py-0.5 rounded">v1.0</span>
-                <!-- Hidden Tracker (For your eyes only) -->
-                <span id="download-counter" style="display: none;">0</span>
             </div>
             
             <!-- Badges -->
@@ -281,45 +279,5 @@
         </div>
     </footer>
 
-    <!-- Live Counter Script -->
-    <script>
-        const namespace = 'SpydyReminderAppLive';
-        const counterName = 'downloads';
-        const counterElement = document.getElementById('download-counter');
-        
-        // Starting at 0 as requested!
-        const BASELINE = 0; 
-        
-        // Bypassing CORS security blocks with a proxy (and cache-busting so it updates instantly)
-        const cacheBuster = Date.now();
-        const fetchUrl = 'https://corsproxy.io/?' + encodeURIComponent(`https://api.counterapi.dev/v1/${namespace}/${counterName}`) + '?cb=' + cacheBuster;
-        const fetchUpUrl = 'https://corsproxy.io/?' + encodeURIComponent(`https://api.counterapi.dev/v1/${namespace}/${counterName}/up`) + '?cb=' + cacheBuster;
-
-        // Fetch current count on load
-        fetch(fetchUrl, { cache: 'no-store' })
-            .then(res => res.json())
-            .then(data => {
-                const totalDownloads = BASELINE + data.count;
-                counterElement.innerText = totalDownloads;
-                // Log it to the Inspect console for the owner
-                console.log(`%c🕵️‍♂️ SPYDY SECRET TRACKER: You have ${totalDownloads} total downloads!`, 'color: #22c55e; font-size: 14px; font-weight: bold;');
-            })
-            .catch(err => {
-                counterElement.innerText = "Error";
-            });
-
-        // Function to increment counter when download is clicked
-        function incrementCounter() {
-            // First update locally
-            const currentCount = parseInt(counterElement.innerText);
-            if (!isNaN(currentCount)) {
-                counterElement.innerText = currentCount + 1;
-                console.log(`%c🎉 NEW DOWNLOAD! Total is now: ${currentCount + 1}`, 'color: #3b82f6; font-size: 12px; font-weight: bold;');
-            }
-            
-            // Send increment request to global counter API
-            fetch(fetchUpUrl, { cache: 'no-store' }).catch(err => console.error("Counter API error:", err));
-        }
-    </script>
 </body>
 </html>
